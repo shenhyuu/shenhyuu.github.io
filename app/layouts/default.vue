@@ -15,7 +15,7 @@
     </nav>
 
     <!-- Main Layout Grid -->
-    <div class="main-grid">
+    <div class="main-grid" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <!-- Terminal Sidebar -->
       <aside class="terminal-sidebar" :class="{ collapsed: sidebarCollapsed }">
         <div class="sidebar-header">
@@ -403,6 +403,11 @@ onMounted(() => {
   grid-template-columns: 40% 50% 10%;
   min-height: calc(100vh - 72px);
   margin-top: 48px;
+  transition: grid-template-columns 0.3s ease;
+}
+
+.main-grid.sidebar-collapsed {
+  grid-template-columns: 48px 1fr 10%;
 }
 
 /* Terminal Sidebar */
@@ -416,7 +421,6 @@ onMounted(() => {
 
 .terminal-sidebar.collapsed {
   width: 48px;
-  grid-template-columns: 48px 1fr 10%;
 }
 
 .sidebar-header {

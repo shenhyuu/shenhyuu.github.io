@@ -203,7 +203,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useIntersectionObserver, useInterval } from '@vueuse/core'
 
 // Reactive state
@@ -214,6 +214,7 @@ const currentPlaceholder = ref('')
 const binaryCanvas = ref(null)
 const projectsContainer = ref(null)
 const contactInput = ref(null)
+// 侧边栏状态不再需要在这里管理，由布局组件处理
 
 // Placeholder animation
 const placeholders = [
@@ -351,6 +352,8 @@ const commitTooltip = ref({
   sha: '',
   message: ''
 })
+
+// onUnmounted 不再需要，因为没有需要清理的资源
 
 // Methods
 let handleMouseMove = (e) => {
@@ -541,6 +544,46 @@ useHead({
   position: relative;
 }
 
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .geek-homepage {
+    margin: 0;
+  }
+  
+  .hero-section,
+  .sidebar-collapsed .hero-section {
+    padding: 0 20px;
+  }
+  
+  section,
+  .sidebar-collapsed section {
+    padding: 60px 20px;
+    max-width: 100%;
+  }
+  
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .hero-stats {
+    justify-content: center;
+  }
+}
+
+/* 平板设备适配 */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .sidebar-collapsed .hero-section {
+    padding: 0 40px 0 20px;
+  }
+  
+  .sidebar-collapsed section {
+    padding: 80px 40px 80px 20px;
+    max-width: 1200px;
+  }
+}
+
 /* Hero Section */
 .hero-section {
   min-height: 100vh;
@@ -549,6 +592,12 @@ useHead({
   padding: 0 40px;
   position: relative;
   overflow: hidden;
+  transition: padding 0.3s ease;
+}
+
+/* 侧边栏收起时调整Hero区域内边距 */
+.sidebar-collapsed .hero-section {
+  padding: 0 60px 0 20px;
 }
 
 .hero-content {
@@ -610,6 +659,13 @@ section {
   padding: 80px 40px;
   max-width: 1200px;
   margin: 0 auto;
+  transition: padding 0.3s ease, max-width 0.3s ease;
+}
+
+/* 侧边栏收起时调整所有section */
+.sidebar-collapsed section {
+  padding: 80px 60px 80px 20px;
+  max-width: 1400px;
 }
 
 .section-header {
