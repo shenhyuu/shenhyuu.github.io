@@ -400,14 +400,14 @@ onMounted(() => {
 /* Main Grid */
 .main-grid {
   display: grid;
-  grid-template-columns: 40% 50% 10%;
+  grid-template-columns: auto 1fr 80px;
   min-height: calc(100vh - 72px);
   margin-top: 48px;
   transition: grid-template-columns 0.3s ease;
 }
 
 .main-grid.sidebar-collapsed {
-  grid-template-columns: 48px 1fr 10%;
+  grid-template-columns: 48px 1fr 80px;
 }
 
 /* Terminal Sidebar */
@@ -417,10 +417,14 @@ onMounted(() => {
   position: relative;
   transition: width 0.3s ease;
   overflow: hidden;
+  min-width: 200px;
+  max-width: 400px;
+  width: auto;
 }
 
 .terminal-sidebar.collapsed {
   width: 48px;
+  min-width: 48px;
 }
 
 .sidebar-header {
@@ -508,6 +512,9 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
 }
 
 .time-display {
