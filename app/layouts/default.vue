@@ -20,9 +20,9 @@
       <aside class="terminal-sidebar" :class="{ collapsed: sidebarCollapsed }">
         <div class="sidebar-header">
           <button @click="toggleSidebar" class="collapse-btn">
-            <span class="text-neon-green">&gt;</span>
+            <span class="text-neon-green">{{ sidebarCollapsed ? '>' : '<' }}</span>
           </button>
-          <span v-if="!sidebarCollapsed" class="text-mono text-sm text-secondary">EXPLORER</span>
+          <span v-if="!sidebarCollapsed" class="sidebar-title">EXPLORER</span>
         </div>
         
         <div v-if="!sidebarCollapsed" class="directory-tree">
@@ -37,11 +37,17 @@
         </div>
         
         <!-- Code Lines Indicator -->
-        <div class="code-lines">
+        <div class="code-lines" v-if="!sidebarCollapsed">
           <div class="line-indicator" 
                v-for="n in 20" 
                :key="n"
                :style="{ opacity: Math.random() * 0.5 + 0.3 }"></div>
+        </div>
+        
+        <!-- Collapsed State Indicator -->
+        <div v-if="sidebarCollapsed" class="collapsed-indicator">
+          <div class="pulse-dot"></div>
+          <div class="expand-hint">···</div>
         </div>
       </aside>
 
@@ -412,89 +418,234 @@ onMounted(() => {
 
 /* Terminal Sidebar */
 .terminal-sidebar {
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(13, 17, 23, 0.8);
+  backdrop-filter: blur(10px);
   border-right: 1px solid rgba(230, 237, 243, 0.1);
   position: relative;
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
   overflow: hidden;
   min-width: 200px;
   max-width: 400px;
   width: auto;
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.1);
 }
 
 .terminal-sidebar.collapsed {
-  width: 48px;
-  min-width: 48px;
+  width: 64px;
+  min-width: 64px;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
-  padding: 12px;
+  justify-content: flex-start;
+  padding: 16px 16px 16px 56px;
   border-bottom: 1px solid rgba(230, 237, 243, 0.1);
+  background: rgba(0, 255, 157, 0.05);
+  backdrop-filter: blur(5px);
+  position: relative;
+  height: 64px;
+  min-height: 64px;
+}
+
+.terminal-sidebar.collapsed .sidebar-header {
+  padding: 16px 16px 16px 56px;
+  justify-content: center;
+  height: 64px;
+  min-height: 64px;
 }
 
 .collapse-btn {
-  background: none;
-  border: none;
+  background: rgba(0, 255, 157, 0.1);
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  border-radius: 6px;
   color: var(--color-neon-green);
   cursor: pointer;
-  margin-right: 8px;
-  transition: transform 0.2s ease;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.collapse-btn {
+  background: rgba(0, 255, 157, 0.1);
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  border-radius: 6px;
+  color: var(--color-neon-green);
+  cursor: pointer;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  flex-shrink: 0;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.terminal-sidebar.collapsed .collapse-btn {
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .collapse-btn:hover {
-  transform: scale(1.2);
+  background: rgba(0, 255, 157, 0.2);
+  border-color: rgba(0, 255, 157, 0.5);
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+}
+
+.sidebar-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: rgba(230, 237, 243, 0.8);
+  text-transform: uppercase;
+  background: linear-gradient(45deg, var(--color-neon-green), rgba(0, 255, 157, 0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .directory-tree {
-  padding: 12px;
+  padding: 16px;
 }
 
 .tree-item {
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 10px 12px;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .tree-item:hover {
   background: rgba(0, 255, 157, 0.1);
+  border-color: rgba(0, 255, 157, 0.3);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 255, 157, 0.2);
 }
 
 .tree-item.active {
   background: rgba(0, 255, 157, 0.2);
+  border-color: rgba(0, 255, 157, 0.5);
   color: var(--color-neon-green);
+  box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
 }
 
 .tree-icon {
-  margin-right: 8px;
+  margin-right: 10px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-neon-green);
+  transition: transform 0.2s ease;
+}
+
+.tree-item:hover .tree-icon {
+  transform: rotate(90deg);
 }
 
 .tree-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .code-lines {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
+  right: 8px;
+  top: 80px;
+  width: 3px;
+  height: calc(100% - 100px);
   display: flex;
   flex-direction: column;
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .line-indicator {
   flex: 1;
+  background: linear-gradient(45deg, var(--color-neon-green), rgba(0, 255, 157, 0.6));
+  margin: 0.5px 0;
+  transition: all 0.3s ease;
+  border-radius: 1px;
+}
+
+.line-indicator:hover {
   background: var(--color-neon-green);
-  margin: 1px 0;
-  transition: opacity 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 255, 157, 0.8);
+  transform: scaleX(1.5);
+}
+
+/* Collapsed State Indicator */
+.collapsed-indicator {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-neon-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.expand-hint {
+  writing-mode: vertical-rl;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(0, 255, 157, 0.6);
+  letter-spacing: 2px;
+  animation: fadeInOut 3s infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* Main Content */
