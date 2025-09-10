@@ -2,19 +2,260 @@
 @import "@nuxt/ui";
 
 @theme static {
-    --font-sans: 'KaiTi', sans-serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 
     --breakpoint-3xl: 1920px;
 
+    /* Geek Color Palette */
+    --color-bg-primary: #0d1117;
+    --color-neon-green: #00ff9d;
+    --color-purple-electric: #7c3aed;
+    --color-text-primary: #e6edf3;
+    --color-text-secondary: #8b949e;
+    
     --color-green-50: #EFFDF5;
     --color-green-100: #D9FBE8;
     --color-green-200: #B3F5D1;
     --color-green-300: #75EDAE;
-    --color-green-400: #00DC82;
+    --color-green-400: #00ff9d;
     --color-green-500: #00C16A;
     --color-green-600: #00A155;
     --color-green-700: #007F45;
     --color-green-800: #016538;
     --color-green-900: #0A5331;
     --color-green-950: #052E16;
+}
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(139, 148, 158, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-neon-green);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 157, 0.8);
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  text-shadow: 1px 1px 2px var(--color-purple-accent);
+}
+
+code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    background: rgba(230, 237, 243, 0.1);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.title-hero {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 42px;
+    text-shadow: 1px 1px 2px var(--color-purple-electric);
+    color: var(--color-text-primary);
+}
+
+.text-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Glow Effects */
+.glow-neon {
+    box-shadow: 0 0 2px var(--color-neon-green);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glow-neon:hover {
+    box-shadow: 0 0 8px var(--color-neon-green);
+    transform: translateY(-2px);
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(13, 17, 23, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(230, 237, 243, 0.1);
+}
+
+/* Glow effects */
+.glow-green {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 20px rgba(0, 255, 157, 0.3);
+}
+
+/* Cards */
+.card-glow {
+    background: rgba(230, 237, 243, 0.05);
+    border: 1px solid rgba(230, 237, 243, 0.1);
+    box-shadow: 0 0 2px var(--color-neon-green);
+    transition: all 0.3s ease;
+}
+
+/* Buttons */
+.btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(230, 237, 243, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    background: rgba(230, 237, 243, 0.1);
+}
+
+/* Matrix Rain Effect */
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Particle Trail */
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--color-neon-green);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: fadeOut 0.8s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+/* Card Tilt Effect */
+.card-tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+/* Terminal Sidebar */
+.terminal-sidebar {
+    background: rgba(13, 17, 23, 0.95);
+    border-right: 1px solid rgba(230, 237, 243, 0.1);
+    position: relative;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.terminal-sidebar::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-neon-green), var(--color-purple-electric));
+}
+
+/* Status Rail */
+.status-rail {
+    background: rgba(13, 17, 23, 0.9);
+    border-left: 1px solid rgba(230, 237, 243, 0.1);
+    padding: 20px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.6s ease-out forwards;
+}
+
+/* Easter Egg Styles */
+.hack .card::after {
+    content: '// TODO: impress them';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+}
+
+/* Navigation */
+.nav-glass {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    z-index: 100;
+    background: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(230, 237, 243, 0.1);
+}
+
+/* Command Palette */
+.command-palette {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: rgba(13, 17, 23, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--color-neon-green);
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
 }
